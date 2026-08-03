@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/actions/action
 title: "Action"
 description: ""
-access_date: 2026-08-03T19:09:20.358Z
-current_date: 2026-08-03T19:09:20.358Z
+access_date: 2026-08-03T19:39:33.704Z
+current_date: 2026-08-03T19:39:33.704Z
 ---
 
 Action is the way to perform writes in the system. The [configuration](../ent-schema/actions.md) determines what code is generated and the developer is able to further customize as needed.

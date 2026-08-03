@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/custom-graphql/custom-accessors
 title: "Custom Accessors"
 description: ""
-access_date: 2026-08-03T19:09:20.358Z
-current_date: 2026-08-03T19:09:20.358Z
+access_date: 2026-08-03T19:39:33.704Z
+current_date: 2026-08-03T19:39:33.704Z
 ---
 
 We briefly showed how to add [custom functionality](../core-concepts/ent.md#custom-functionality) in an object but didn't show how to expose it in GraphQL to end users. This explains how to do so.

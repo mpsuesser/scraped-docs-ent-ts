@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/custom-graphql/file-uploads
 title: "File Uploads"
 description: ""
-access_date: 2026-08-03T19:09:20.358Z
-current_date: 2026-08-03T19:09:20.358Z
+access_date: 2026-08-03T19:39:33.704Z
+current_date: 2026-08-03T19:39:33.704Z
 ---
 
 Uploading files is a common of part of applications and we need a way to support that.

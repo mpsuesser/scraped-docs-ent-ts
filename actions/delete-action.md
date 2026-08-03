@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/actions/delete-action
 title: "Delete Action"
 description: ""
-access_date: 2026-08-03T19:09:20.358Z
-current_date: 2026-08-03T19:09:20.358Z
+access_date: 2026-08-03T19:39:33.704Z
+current_date: 2026-08-03T19:39:33.704Z
 ---
 
 This is done via the `ActionOperation.Delete` or `ActionOperation.Mutations` [operation](../ent-schema/actions.md#operation).

@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/actions/action-only-fields
 title: "Action Only Fields"
 description: ""
-access_date: 2026-08-03T18:23:20.955Z
-current_date: 2026-08-03T18:23:20.955Z
+access_date: 2026-08-03T18:55:24.403Z
+current_date: 2026-08-03T18:55:24.403Z
 ---
 
 Allows [configuring](../ent-schema/actions.md#actiononlyfields) other fields to be added in the [input](input.md#action-input) of an Action.

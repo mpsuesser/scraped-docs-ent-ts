@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/core-concepts/ent-query
 title: "Ent Query"
 description: ""
-access_date: 2026-08-03T18:23:20.955Z
-current_date: 2026-08-03T18:23:20.955Z
+access_date: 2026-08-03T18:55:24.403Z
+current_date: 2026-08-03T18:55:24.403Z
 ---
 
 Ent Query is the way to query for edge data, counts, or the ents at the end of the edge. It provides pagination and eventually ordering, filtering and custom ways to slice the data. We currently have two types of EntQueries:

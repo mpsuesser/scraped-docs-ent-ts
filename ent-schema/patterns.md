@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/ent-schema/patterns
 title: "Patterns"
 description: ""
-access_date: 2026-08-03T18:23:20.955Z
-current_date: 2026-08-03T18:23:20.955Z
+access_date: 2026-08-03T18:55:24.403Z
+current_date: 2026-08-03T18:55:24.403Z
 ---
 
 Patterns are shared objects for reusable concepts across schemas.

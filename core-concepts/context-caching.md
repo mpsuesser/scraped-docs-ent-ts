@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/core-concepts/context-caching
 title: "Context Caching"
 description: ""
-access_date: 2026-08-03T18:55:24.403Z
-current_date: 2026-08-03T18:55:24.403Z
+access_date: 2026-08-03T19:01:25.904Z
+current_date: 2026-08-03T19:01:25.904Z
 ---
 
 To speed up applications, we end up caching data in memory to avoid repeated trips to the database. Since we create a [new `Context` per request](context.md#new-request), we depend on the context cache (if available).

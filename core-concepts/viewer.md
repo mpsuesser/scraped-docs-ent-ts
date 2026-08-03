@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/core-concepts/viewer
 title: "Viewer"
 description: ""
-access_date: 2026-08-03T18:55:24.403Z
-current_date: 2026-08-03T18:55:24.403Z
+access_date: 2026-08-03T19:01:25.904Z
+current_date: 2026-08-03T19:01:25.904Z
 ---
 
 Viewer represents *who's* viewing the content in your product or app. Every time data is loaded or changed, the Viewer is required to determine if that action can be performed.

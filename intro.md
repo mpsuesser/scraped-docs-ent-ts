@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/intro
 title: "Intro"
 description: ""
-access_date: 2026-08-03T18:55:24.403Z
-current_date: 2026-08-03T18:55:24.403Z
+access_date: 2026-08-03T19:01:25.904Z
+current_date: 2026-08-03T19:01:25.904Z
 ---
 
 The `Ent` framework was created to free up time for engineers and teams to focus on what's different about their app as opposed to spending time rebuilding the same cruft that's common across different projects.

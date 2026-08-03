@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/actions/edit-action
 title: "Edit Action"
 description: ""
-access_date: 2026-08-03T18:55:24.403Z
-current_date: 2026-08-03T18:55:24.403Z
+access_date: 2026-08-03T19:01:25.904Z
+current_date: 2026-08-03T19:01:25.904Z
 ---
 
 This is done via the `ActionOperation.Edit` or `ActionOperation.Mutations` [operation](../ent-schema/actions.md#operation).

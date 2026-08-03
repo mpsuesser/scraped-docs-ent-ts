@@ -1,0 +1,18 @@
+---
+url: https://ent.dev/docs/advanced-topics/deploying
+title: "Deploying"
+description: ""
+access_date: 2026-08-03T17:27:01.267Z
+current_date: 2026-08-03T17:27:01.267Z
+---
+
+If using the [ent-starter](https://github.com/lolopinto/ent-starter) repository, here are the following things that need to be done to deploy:
+
+- add `DB_CONNECTION_STRING` environment variable pointing to the database connection string
+- add `PORT` environment variable with value `80`
+
+Deploy to a Docker environment with the `Dockerfile` in the ent-starter repository as the Dockerfile used.
+
+That installs dependencies, compiles, [upgrades](cli.md#upgrade) the database and starts the Node server.
+
+As your application gets more complicated, modify as needed to suit your needs.

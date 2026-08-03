@@ -1,0 +1,65 @@
+---
+url: https://ent.dev/docs/core-concepts/viewer
+title: "Viewer"
+description: ""
+access_date: 2026-08-03T17:27:01.267Z
+current_date: 2026-08-03T17:27:01.267Z
+---
+
+Viewer represents *who's* viewing the content in your product or app. Every time data is loaded or changed, the Viewer is required to determine if that action can be performed.
+
+Viewer is just an interface that can easily be implemented by any object and is not tied to any implementation or authentication mechanism.
+
+Here's what the Viewer interface looks like:
+
+```ts
+export interface Viewer<
+  TEnt extends any = Ent<any> | null,
+  TID extends any = ID | null,
+> {
+  viewerID: TID;
+  viewer: () => Promise<TEnt>;
+  instanceKey: () => string;
+  context?: Context<any>;
+}
+```
+
+## viewerID
+
+The `viewerID` indicates a unique identifier, usually the id in the database of the User or Account that's associated with whoever's logged in.
+
+## viewer
+
+The `viewer` method returns the [`Ent`](ent.md) associated with the logged in user or `null` if there's no logged in viewer.
+
+## instanceKey
+
+The `instanceKey` returns a unique identifier associated with this `Viewer`. It may be used to perform caching to save requests to the database.
+
+## context
+
+The `context` returns the [`Context`](context.md) associated with the "request".
+
+## LoggedOutViewer
+
+The framework comes with a simple `Viewer` to represent the logged out viewer. It's the default Viewer used if none is provided. It can be instantiated as follows:
+
+```ts
+const vc1 = new LoggedOutViewer();
+const vc2 = new LoggedOutViewer(context);
+```
+
+## IDViewer
+
+There's also a simple IDViewer which takes the viewerID and can be used for simple projects. It can be instantiated as follows:
+
+```ts
+const vc1 = new IDViewer(id);
+// both context and ent are optional below:
+// if provided, context satisfies the \`context\` requirement in the Viewer interface
+// if provided, ent satisfies the \`viewer\` requirement in the Viewer interface
+const vc2 = new IDViewer(id, {context: context, ent: user});
+const vc3 = new IDViewer({viewerID: id, context: context, ent: user});
+```
+
+It exists as an example of what a simple implementation of Viewer looks like. It probably doesn't suffice for complex applications so feel free to implement `Viewer` that works for your use-case.

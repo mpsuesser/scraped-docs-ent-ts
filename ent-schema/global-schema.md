@@ -1,0 +1,170 @@
+---
+url: https://ent.dev/docs/ent-schema/global-schema
+title: "Global Schema"
+description: ""
+access_date: 2026-08-03T17:27:01.267Z
+current_date: 2026-08-03T17:27:01.267Z
+---
+
+`global_schema` lets you describe reusable fields, structs, enums, and even edge behavior once and then opt into them from any schema. Use it when multiple Ents share the exact same JSON payload, enum values, or edge lifecycle rules so you only need to maintain a single definition.
+
+## File location and setup
+
+Codegen looks for a file that exports a `GlobalSchema` object. The default location is `src/schema/__global__schema.ts`, but you can override it via `globalSchemaPath` in `ent.yml`:
+
+```yml
+globalSchemaPath: global_schema.ts
+```
+
+The generated `src/ent/internal.ts` automatically wires the file up by calling `setGlobalSchema`, so every entrypoint that imports anything from `src/ent` gets the global schema for free (see `examples/todo-sqlite/src/ent/internal.ts`). If you have a custom entrypoint that bypasses `src/ent`, make sure you call `setGlobalSchema` yourself before touching any code that relies on the shared types.
+
+## Declaring shared fields
+
+Define globals inside the `fields` map. Each entry is a regular field factory, so you can compose nested structs, imported custom types, or globals from other packages. Below is an abbreviated version of `examples/todo-sqlite/src/schema/global_schema.ts`:
+
+```ts
+import { BooleanType, GlobalSchema, StringType, StructType, StructTypeAsList } from "@snowtop/ent/schema/";
+import { GlobalDeletedEdge } from "@snowtop/ent-soft-delete";
+
+const globalSchema: GlobalSchema = {
+  fields: {
+    account_prefs: StructType({
+      tsType: "AccountPrefs",
+      graphQLType: "AccountPrefs",
+      fields: {
+        finishedNux: BooleanType(),
+        enableNotifs: BooleanType(),
+        preferredLanguage: StringType(),
+      },
+    }),
+    countries: StructTypeAsList({
+      tsType: "Country",
+      graphQLType: "Country",
+      fields: {
+        name: StringType(),
+        code: StringType(),
+      },
+    }),
+  },
+  ...GlobalDeletedEdge,
+};
+export default globalSchema;
+```
+
+### Referencing a global struct
+
+Once a struct exists globally, reference it from any schema by passing `globalType` to `StructType` or `StructTypeAsList`. The field still accepts local options (nullable, privacy, defaults, etc.), but the shape, GraphQL type name, and generated TypeScript type come from the global definition.
+
+```ts
+const AccountSchema = new TodoBaseEntSchema({
+  fields: {
+    accountPrefs: StructType({ nullable: true, globalType: "AccountPrefs" }),
+    accountPrefs3: StructType({
+      globalType: "AccountPrefs",
+      serverDefault: { finishedNux: false, enableNotifs: false, preferredLanguage: "en_US" },
+    }),
+    accountPrefsList: StructTypeAsList({ nullable: true, globalType: "AccountPrefs" }),
+    country_infos: StructTypeAsList({
+      tsType: "CountryInfo",
+      fields: { countries: StructTypeAsList({ globalType: "Country" }) },
+    }),
+  },
+});
+```
+
+Every place that references `AccountPrefs` now reuses a single `type AccountPrefs`, `input AccountPrefsInput`, and JSON serialization logic. GraphQL clients only learn a single object shape regardless of which Ent returns it.
+
+### Reusing enum definitions
+
+Shared enums also live inside `fields`. You get to specify the canonical list of values once and refer to it via `globalType` anywhere you need the enum. This keeps the generated TypeScript union and GraphQL enum synchronized.
+
+```ts
+const globalSchema: GlobalSchema = {
+  fields: {
+    tag: EnumType({
+      tsType: "GuestTag",
+      graphQLType: "GuestTag",
+      values: ["friend", "coworker", "family"],
+      disableUnknownType: true,
+    }),
+  },
+};
+```
+```ts
+const GuestSchema = new EntSchema({
+  fields: {
+    tag: EnumType({ globalType: "GuestTag", nullable: true }),
+  },
+});
+```
+
+The same approach works for `EnumListType`, `IntegerEnumType`, and `IntegerEnumListType` because they all delegate back to the global enum definition when `globalType` is set.
+
+## Global edges and edge transforms
+
+Besides fields, the global schema can change how association edges behave everywhere:
+
+- `edges`: declare association edges that do not naturally belong to a single schema. Codegen creates tables and edge constants for them just like schema-scoped edges. (See `examples/simple/src/schema/__global__schema.ts` for a `loginAuth` edge that points to `User`.)
+- `extraEdgeFields`: add columns to every edge table (including edge groups and global edges). They are processed like fields, so you can set defaults, validation, etc.
+- `transformEdgeRead`: return a clause that automatically augments every edge query. This is perfect for things like soft-delete filters.
+- `transformEdgeWrite`: intercept insert/update/delete operations on edges so you can rewrite them.
+
+The soft-delete helper from `@snowtop/ent-soft-delete` is a practical example. It adds a `deleted_at` column to all edge tables, automatically filters it out during reads, and converts deletes into updates:
+
+```ts
+export const GlobalDeletedEdge = {
+  extraEdgeFields: {
+    deleted_at: TimestampType({ nullable: true, defaultValueOnCreate: () => null }),
+  },
+  transformEdgeRead(): Clause {
+    return query.Eq("deleted_at", null);
+  },
+  transformEdgeWrite(stmt) {
+    if (stmt.op === SQLStatementOperation.Delete) {
+      return { op: SQLStatementOperation.Update, data: { deleted_at: new Date() } };
+    }
+    return null;
+  },
+};
+```
+
+Spreading that object inside your global schema (as the todo-sqlite example does) means every edge created through actions, loaders, or queries respects the soft-delete contract without touching individual schemas.
+
+## Database extensions
+
+`dbExtensions` declares database-level Postgres extensions that your schema depends on. This is the source of truth for codegen and migrations, and it is how extension-backed field/index helpers prove that the required extension is actually part of the schema.
+
+```ts
+import type { GlobalSchema } from "@snowtop/ent";
+import { PostGISExtension } from "@snowtop/ent-postgis";
+import { PgVectorExtension } from "@snowtop/ent-pgvector";
+
+const globalSchema: GlobalSchema = {
+  dbExtensions: [
+    PostGISExtension(),
+    PgVectorExtension({ provisionedBy: "external" }),
+  ],
+};
+
+export default globalSchema;
+```
+
+Each entry supports the following options:
+
+- `name`: the Postgres extension name, for example `postgis` or `vector`.
+- `provisionedBy`: who owns the extension lifecycle. The default is `"ent"`, which lets migrations create, upgrade, move, and drop the extension as needed. Set `"external"` when the database service or DBA installs the extension and Ent should only validate that it already exists.
+- `version`: optional version pin for migrations and validation.
+- `installSchema`: optional install schema for extensions that support schema moves.
+- `runtimeSchemas`: schemas that should be part of the runtime `search_path` when extension types or functions live outside the app schema. Most packages default this to `["public"]`.
+- `dropCascade`: whether downgrade should use `CASCADE` when dropping the extension.
+
+Use `provisionedBy: "external"` for hosted Postgres setups where `CREATE EXTENSION` is not allowed but the extension is already present. Ent will not try to install or move it, and `auto_schema` will fail if the required extension, version, or install schema is missing.
+
+## Putting it all together
+
+1. Create a `GlobalSchema` file (either at `src/schema/__global__schema.ts` or whatever you set as `globalSchemaPath`).
+2. Describe shared structs/enums in the `fields` map, declare any required Postgres extensions in `dbExtensions`, and optionally set up edge-wide behavior via `edges`, `extraEdgeFields`, `transformEdgeRead`, or `transformEdgeWrite`.
+3. Reference the shared types with `globalType` wherever you need them. You can still tweak per-field options to fit each schema.
+4. Run the CLI (`tsent codegen` or whichever wrapper you use in your project) so the new global definitions show up in the generated Ent, GraphQL schema, and SQL migrations.
+
+With this setup you only define complex payloads, enums, and edge behavior once, which keeps your schemas consistent and eliminates the drift that happens when every team copies the same JSON field by hand.

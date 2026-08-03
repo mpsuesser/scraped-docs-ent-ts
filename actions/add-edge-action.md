@@ -1,0 +1,127 @@
+---
+url: https://ent.dev/docs/actions/add-edge-action
+title: "Add Edge Action"
+description: ""
+access_date: 2026-08-03T17:27:01.267Z
+current_date: 2026-08-03T17:27:01.267Z
+---
+
+This is done via the `ActionOperation.AddEdge` [operation](../ent-schema/actions.md#operation).
+
+Based on the [schema](action.md#schema) with the `AddEdge` action in the edge named `hosts` leads to 2 classes.
+
+First, the base class:
+
+```ts
+export class EventAddHostActionBase 
+  implements
+    Action<
+      Event,
+      EventBuilder<EventInput, Event>,
+      Viewer,
+      EventInput,
+      Event
+{
+  public readonly builder: EventBuilder<EventInput, Event>;
+  public readonly viewer: Viewer; 
+  protected readonly event: Event;
+
+  constructor(viewer: Viewer, event: Event) {
+    this.viewer = viewer;
+    this.builder = new EventBuilder(
+      this.viewer,
+      WriteOperation.Edit,
+      this,
+      event,
+    );
+    this.event = event;
+  }
+
+  getPrivacyPolicy(): PrivacyPolicy {
+    return AllowIfViewerHasIdentityPrivacyPolicy;
+  }
+
+  addHost(id: ID) {
+    //...
+  }
+  // ...
+}
+```
+
+and then the subclass:
+
+```ts
+import {
+import { EventAddHostActionBase } from "src/ent/generated/event/actions/event_add_host_action_base";
+
+export default class EventAddHostAction extends EventAddHostActionBase {}
+```
+
+The base class `EventAddHostActionBase` is where all shared functionality is and will be regenerated as the action configuration changes. It has the default privacy policy plus a bunch of other methods shown below.
+
+The subclass will be generated **once** and any customizations can be applied there.
+
+## Usage
+
+```ts
+const [event, host] = await Promise.all([
+    createEvent(),
+    createUser(),
+  ]);
+
+  // adds host and returns event. throws if there was an error
+  const event2 = await EventAddHostAction.create(viewer, event).addHost(host.id).saveX();
+
+  // adds host and returns event. returns null if there was an error
+  const event3 = await EventAddHostAction.create(viewer, event).addHost(host.id).save();
+
+// validates that host can be added (e.g. viewer has the right permissions or the validator allows it) and throws if not
+  const valid = await EventAddHostAction.create(viewer, event).addHost(host.id).validX();
+
+  // validates that host can be added (e.g. viewer has the right permissions or the validator allows it) and returns true/false 
+  const valid2 = await EventAddHostAction.create(viewer, event).addHost(host.id).valid();
+```
+
+## GraphQL
+
+The following GraphQL schema is generated which uses the above API.
+
+```markdown
+type Mutation {
+  eventAddHost(input: EventAddHostInput!): EventAddHostPayload!
+}
+
+type EventAddHostPayload {
+  event: Event!
+}
+
+input EventAddHostInput {
+  eventID: ID!
+  hostID: ID!
+}
+
+type Event implements Node {
+  creator: User
+  id: ID!
+  name: String!
+  startTime: Time!
+  endTime: Time
+  eventLocation: String!
+  ///.... 
+}
+```
+
+and called as follows:
+
+```graphql
+mutation eventAddHostMutation($input: EventAddHostInput!) {
+  eventAddHost(input: $input) {
+    event {
+      id 
+      creator {
+        id
+      }
+    }
+  }
+}
+```

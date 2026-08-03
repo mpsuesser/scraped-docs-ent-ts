@@ -1,0 +1,260 @@
+---
+url: https://ent.dev/docs/custom-data-access/custom-queries
+title: "Custom Queries"
+description: ""
+access_date: 2026-08-03T17:27:01.267Z
+current_date: 2026-08-03T17:27:01.267Z
+---
+
+The generated code and APIs that exist often aren't enough and you'll want to perform custom queries to access your data in the database.
+
+There are multiple ways of doing this:
+
+- load all ents with privacy checks with `EntName.loadCustom`
+- load all raw data with `EntName.loadCustomData`
+- load [EntQuery](../core-concepts/ent-query.md) with pagination, filtering, ordering and all the bells and whistles of the generated queries.
+
+We'll be using the following schema in all the examples below:
+
+```ts
+const TodoSchema = new EntSchema({
+  fields: {
+    text: StringType(),
+    completed: BooleanType({
+      index: true,
+      defaultValueOnCreate: () => {
+        return false;
+      },
+    }),
+    creatorID: UUIDType({
+      foreignKey: { schema: "Account", column: "id" },
+    }),
+  }, 
+}); 
+export default TodoSchema;
+```
+
+## CustomQuery
+
+Each Ent has generated static methods `loadCustom` and `loadCustomData` which take `CustomQuery` which can be used to customize the query sent to the database.
+
+```ts
+declare type CustomQuery = string | rawQueryOptions | clause.Clause | QueryDataOptions;
+```
+
+### query with string
+
+To query all completed todos in the schema, you can do the following:
+
+```ts
+// sqlite query
+const closedTodos = await Todo.loadCustom(
+    account.viewer,
+   \`SELECT * FROM todos where completed = 1\`,
+ );
+
+// postgres
+const closedTodos = await Todo.loadCustom(
+    account.viewer,
+   \`SELECT * FROM todos where completed = true\`,
+ );
+```
+
+### query with clause
+
+To query all open todos of an account:
+
+```ts
+const openTodos = await Todo.loadCustom(
+  account.viewer,
+  query.And(query.Eq("creator_id", account.id), query.Eq("completed", false)),
+);
+```
+
+### query with raw parameterized query
+
+```ts
+// sqlite
+// like the first example but using prepared queries
+const closedTodos = await Todo.loadCustom(account.viewer, {
+  query: \`SELECT * FROM todos where completed = ?\`,
+  values: [1],
+});
+
+// postgres
+const closedTodos = await Todo.loadCustom(account.viewer, {
+  query: \`SELECT * FROM todos where completed = $1\`,
+  values: [true],
+});
+```
+
+This uses [prepared queries](https://en.wikipedia.org/wiki/Prepared_statement).
+
+### query and orderby
+
+```ts
+const orderedOpenedTodos = await Todo.loadCustom(account.viewer, {
+  clause: query.And(
+    query.Eq("creator_id", account.id),
+    query.Eq("completed", false),
+  ),
+  orderby: [
+    {
+      column: 'created_at',
+      direction: 'DESC',
+    },
+  ],
+});
+```
+
+Other options supported here are:
+
+```ts
+interface QueryDataOptions<T extends Data = Data, K = keyof T> {
+    distinct?: boolean;
+    clause: clause.Clause<T, K>;
+    orderby?: OrderBy;
+    groupby?: string;
+    limit?: number;
+}
+```
+
+### loadCustomData
+
+Any of the above can be used with `loadCustomData` instead of `loadCustom` to just fetch the raw data instead of the ents:
+
+```ts
+const closedTodos: Data[] = await Todo.loadCustomData({
+  clause: query.Eq("completed", false),
+  query: \`SELECT * FROM todos where completed = ?\`,
+  values: [1],
+});
+```
+
+### expose to graphql
+
+To expose the Ent accessors above to GraphQL as a [list](https://graphql.org/learn/schema/#lists-and-non-null), use [gqlField](../custom-graphql/gql-field.md).
+
+```ts
+export class Account extends AccountBase {
+
+@gqlField({ class: "Account", name: "openTodosPlural", type: "[Todo]", async: true })
+  async openTodosPlural() {
+    return Todo.loadCustom(
+      this.viewer,
+      query.And(query.Eq("creator_id", this.id), query.Eq("completed", false)),
+    );
+  }
+```
+
+## Custom EntQuery
+
+Fetching all objects in a custom query isn't always desired because as usage of your application grows, the amount of data that could be returned is a lot. We provide the ability to return an [EntQuery](../core-concepts/ent-query.md) which can be exposed as a GraphQL [Connection](https://graphql.org/learn/pagination/#complete-connection-model) that follows the [Relay Spec](https://relay.dev/graphql/connections.htm).
+
+Here's an example query to get open todos of an account in a simple TODO app:
+
+```ts
+export class AccountToOpenTodosQuery extends CustomEdgeQueryBase<Todo> {
+  constructor(viewer: Viewer, src: ID | Account) {
+    super(viewer, {
+      src,
+      groupCol: "creator_id",
+      loadEntOptions: Todo.loaderOptions(),
+      clause: query.Eq("completed", false),
+      name: "account_to_open_todos",
+      // optional...
+      orderby: [
+        {
+          column: 'created_at',
+          direction: 'DESC',
+        },
+      ],
+    });
+  }
+}
+```
+
+### CustomEdgeQueryBase
+
+This is the base class of a custom EntQuery that needs to be implemented. This is what's used by the generated [index based queries](../core-concepts/ent-query.md#index-based-query).
+
+The relevant API is as follows:
+
+```ts
+interface CustomEdgeQueryOptions<TSource extends Ent<TViewer>, TDest extends Ent<TViewer>, TViewer extends Viewer = Viewer> {
+    src: TSource | ID;
+    loadEntOptions: LoadEntOptions<TDest, TViewer>;
+    groupCol?: string;
+    clause?: Clause;
+    name: string;
+    orderby?: OrderBy;
+    primarySortColIsUnique?: boolean;
+}
+
+declare class CustomEdgeQueryBase<TDest extends Ent> extends BaseEdgeQuery<TDest, Data> {
+  constructor(viewer: TViewer, options: CustomEdgeQueryOptions<TSource, TDest, TViewer>);
+}
+```
+
+`CustomEdgeQueryOptions` has the following properties:
+
+- `src`: The source ent of the query
+- `loadEntOptions`: used to load the ents at the end of the query. The generated `Ent.loaderOptions()` method suffices here
+- `groupCol`: column in the database that can be converted into an IN query when querying for multiple sources
+- `clause`: [Clause](../advanced-topics/clause.md) instance for filtering.
+- `name`: unique name used to identify this query. Used with [Context Caching](../core-concepts/context-caching.md).
+- `orderby`: optional. Used to order the query. If not provided, we sort by the `id` or primary field column field descending.
+- `primarySortColIsUnique`: optional. If provided, first `column` in `orderby` is used in generating the cursors and makes for a simpler SQL query. Otherwise, `id` or primary key column is used.
+
+### expose query to graphql
+
+To expose the custom ent query above to GraphQL as a connection, use [`gqlConnection`](../custom-graphql/gql-connection.md).
+
+```ts
+export class Account extends AccountBase {
+
+@gqlField({ class: "Account", name: "openTodos", type: gqlConnection("Todo") })
+  openTodos() {
+    return new AccountToOpenTodosQuery(this.viewer, this);
+  }
+}
+```
+
+## Global EntQuery
+
+To fetch a query that isn't source based or that's global to your database e.g. all closed todos in the last day, instead of using `CustomEdgeQueryBase` above, you can use `CustomClauseQuery`. This can also be exposed as a GraphQL [Connection](https://graphql.org/learn/pagination/#complete-connection-model) that follows the [Relay Spec](https://relay.dev/graphql/connections.htm).
+
+```ts
+@gqlQuery({ 
+  class: "TodoResolver",
+  name: "closed_todos_last_day", 
+  type: gqlConnection("Todo"),
+  args: [gqlContextType()],
+})
+closedTodosLastDay(context: RequestContext) {
+  const start = Interval.before(new Date(), { hours: 24 })
+    .start.toUTC()
+    .toISO();
+
+  return new CustomClauseQuery(context.getViewer(), {
+    loadEntOptions: Todo.loaderOptions(),
+    clause: query.And(
+      query.Eq("completed", true),
+      query.GreaterEq("completed_date", start),
+    ),
+    name: "closed_todos_last_day",
+    orderby: [
+      {
+        column: 'completed_date',
+        direction: 'DESC',
+      },
+    ],
+  });
+}
+```
+
+If you need to use a SQL expression in a clause and want to avoid the table alias that `CustomClauseQuery` applies by default, pass `overrideAlias: null` to the clause:
+
+```ts
+const cls = query.Eq<Data>("LOWER(name)", name, null);
+```

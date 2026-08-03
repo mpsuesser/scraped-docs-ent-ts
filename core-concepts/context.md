@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/core-concepts/context
 title: "Context"
 description: ""
-access_date: 2026-08-03T19:01:25.904Z
-current_date: 2026-08-03T19:01:25.904Z
+access_date: 2026-08-03T19:09:20.358Z
+current_date: 2026-08-03T19:09:20.358Z
 ---
 
 Context is a simple object that represents, well, the context of what's happening.

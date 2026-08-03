@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/actions/builder
 title: "Builder"
 description: ""
-access_date: 2026-08-03T19:01:25.904Z
-current_date: 2026-08-03T19:01:25.904Z
+access_date: 2026-08-03T19:09:20.358Z
+current_date: 2026-08-03T19:09:20.358Z
 ---
 
 The Builder is the building block for Actions. Even though Action provides the ability to restrict the fields and edges that are exposed to external clients, developers should still have the full power to mutate the object as they see fit.

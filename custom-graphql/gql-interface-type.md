@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/custom-graphql/gql-interface-type
 title: "Gql Interface Type"
 description: ""
-access_date: 2026-08-03T19:01:25.904Z
-current_date: 2026-08-03T19:01:25.904Z
+access_date: 2026-08-03T19:09:20.358Z
+current_date: 2026-08-03T19:09:20.358Z
 ---
 
 Adds a new [GraphQL interface](https://graphql.org/learn/schema/#interfaces) to the schema.

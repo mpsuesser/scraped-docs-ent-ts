@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/core-concepts/authentication
 title: "Authentication"
 description: ""
-access_date: 2026-08-03T19:01:25.904Z
-current_date: 2026-08-03T19:01:25.904Z
+access_date: 2026-08-03T19:09:20.358Z
+current_date: 2026-08-03T19:09:20.358Z
 ---
 
 Authentication is a very complicated topic and we're not going to dive too deep into all that it entails here.

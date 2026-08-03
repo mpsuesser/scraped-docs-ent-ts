@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/custom-graphql/custom-mutations
 title: "Custom Mutations"
 description: ""
-access_date: 2026-08-03T19:01:25.904Z
-current_date: 2026-08-03T19:01:25.904Z
+access_date: 2026-08-03T19:09:20.358Z
+current_date: 2026-08-03T19:09:20.358Z
 ---
 
 As a product gets more complicated, the need to eventually add custom [mutations](https://graphql.org/learn/schema/#the-query-and-mutation-types) to the schema arises. This shows how to do so.

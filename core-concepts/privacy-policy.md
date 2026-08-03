@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/core-concepts/privacy-policy
 title: "Privacy Policy"
 description: ""
-access_date: 2026-08-03T19:01:25.904Z
-current_date: 2026-08-03T19:01:25.904Z
+access_date: 2026-08-03T19:09:20.358Z
+current_date: 2026-08-03T19:09:20.358Z
 ---
 
 The `PrivacyPolicy` is used to apply permission checks on an object. It's used in [Ents](ent.md), [Actions](../actions/action.md) and [Queries](ent-query.md).

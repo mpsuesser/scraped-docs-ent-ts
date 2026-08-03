@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/actions/transactions
 title: "Transactions"
 description: ""
-access_date: 2026-08-03T19:01:25.904Z
-current_date: 2026-08-03T19:01:25.904Z
+access_date: 2026-08-03T19:09:20.358Z
+current_date: 2026-08-03T19:09:20.358Z
 ---
 
 Use `Transaction` when you need multiple actions to succeed or fail together in a single database transaction. This is different from [Triggers](triggers.md): triggers are action-internal and already run inside the action's transaction. If any action fails (validation, privacy, or a database constraint), the entire transaction is rolled back.

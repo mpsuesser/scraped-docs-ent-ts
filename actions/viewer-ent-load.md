@@ -2,9 +2,13 @@
 url: https://ent.dev/docs/actions/viewer-ent-load
 title: "Viewer Ent Load"
 description: ""
-access_date: 2026-08-03T17:27:01.267Z
-current_date: 2026-08-03T17:27:01.267Z
+access_date: 2026-08-03T18:13:08.120Z
+current_date: 2026-08-03T18:13:08.120Z
 ---
+
+# Viewer For Ent Load
+
+After an action is performed, often the object is reloaded as follows:
 
 ```ts
 const user = await CreateUserAction.create(vc, input).saveX();
@@ -12,21 +16,23 @@ const user = await CreateUserAction.create(vc, input).saveX();
 
 There's usually 2 privacy checks performed:
 
-- before the write - can viewer perform action
-- loading the object back - can viewer see this ent
+* before the write - can viewer perform action
+* loading the object back - can viewer see this ent
 
 Usually, these are 2 different policies. In most scenarios, this works fine and nothing needs to be done.
 
 However, in some scenarios, the default viewer can create the object but not necessarily read it afterwards. For example, creating an account on a service while logged out.
 
-```ts
+```ts title="src/ent/user/actions/create_user_action.ts"
+
 export default class CreateUserAction extends CreateUserActionBase {
   getPrivacyPolicy() {
     return AlwaysAllowPrivacyPolicy;
   }
 }
 ```
-```ts
+
+```ts title="src/ent/user.ts"
 export class User extends UserBase {
   getPrivacyPolicy(): PrivacyPolicy<this> {
     return {
@@ -60,7 +66,8 @@ If provided, this takes the row returned from the database (currently, there's a
 
 In this case, we'll update `CreateUserAction` as follows:
 
-```ts
+```ts title="src/ent/user/actions/create_user_action.ts"
+
 export default class CreateUserAction extends CreateUserActionBase {
   getPrivacyPolicy() {
     return AlwaysAllowPrivacyPolicy;

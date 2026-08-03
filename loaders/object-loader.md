@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/loaders/object-loader
 title: "Object Loader"
 description: ""
-access_date: 2026-08-03T17:27:01.267Z
-current_date: 2026-08-03T17:27:01.267Z
+access_date: 2026-08-03T18:13:08.120Z
+current_date: 2026-08-03T18:13:08.120Z
 ---
 
 ObjectLoader is the [Loader](loader.md) used to fetch nodes from the database.

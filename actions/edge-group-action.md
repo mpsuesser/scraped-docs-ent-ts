@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/actions/edge-group-action
 title: "Edge Group Action"
 description: ""
-access_date: 2026-08-03T17:27:01.267Z
-current_date: 2026-08-03T17:27:01.267Z
+access_date: 2026-08-03T18:13:08.120Z
+current_date: 2026-08-03T18:13:08.120Z
 ---
 
 This is done via the `ActionOperation.EdgeGroup` [operation](../ent-schema/actions.md#operation).

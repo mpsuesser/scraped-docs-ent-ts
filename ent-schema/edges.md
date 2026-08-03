@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/ent-schema/edges
 title: "Edges"
 description: ""
-access_date: 2026-08-03T17:27:01.267Z
-current_date: 2026-08-03T17:27:01.267Z
+access_date: 2026-08-03T18:13:08.120Z
+current_date: 2026-08-03T18:13:08.120Z
 ---
 
 Edges provide the ability to express connections between nodes in the graph. They allow a standardized way to indicate a relationship.
@@ -121,8 +121,7 @@ In the future, once we support different shards, the benefit of this design will
 
 A standard edge table has the following columns:
 
-- Postgres
-- SQLite
+#### Postgres
 
 ```markdown
 ent-rsvp=# \d+ event_rsvps
@@ -141,6 +140,23 @@ Indexes:
     "event_rsvps_time_idx" btree ("time")
 
 ent-rsvp=#
+```
+
+#### SQLite
+
+```markdown
+sqlite> .schema event_rsvps
+CREATE TABLE event_rsvps (
+    id1 TEXT NOT NULL, 
+    id1_type TEXT NOT NULL, 
+    edge_type TEXT NOT NULL, 
+    id2 TEXT NOT NULL, 
+    id2_type TEXT NOT NULL, 
+    time TIMESTAMP NOT NULL, 
+    data TEXT, 
+    CONSTRAINT event_rsvps_id1_edge_type_id2_pkey PRIMARY KEY (id1, edge_type, id2)
+);
+CREATE INDEX event_rsvps_time_idx ON event_rsvps (time);
 ```
 
 - `id1` represents the source of the edge
@@ -196,8 +212,7 @@ export default UserSchema;
 
 results in a unique constraint added to the db
 
-- Postgres
-- SQLite
+#### Postgres
 
 ```markdown
 tsent_test=# \d+ user_self_contact_edges
@@ -218,6 +233,24 @@ Indexes:
 
 tsent_test=# 
 \`\`\`
+```
+
+#### SQLite
+
+```markdown
+CREATE TABLE user_self_contact_edges (
+    id1 TEXT NOT NULL, 
+    id1_type TEXT NOT NULL, 
+    edge_type TEXT NOT NULL, 
+    id2 TEXT NOT NULL, 
+    id2_type TEXT NOT NULL, 
+    time TIMESTAMP NOT NULL, 
+    data TEXT, 
+    CONSTRAINT user_self_contact_edges_id1_edge_type_id2_pkey PRIMARY KEY (id1, edge_type, id2), 
+    CONSTRAINT user_self_contact_edges_unique_id1_edge_type UNIQUE (id1, edge_type)
+);
+CREATE INDEX user_self_contact_edges_time_idx ON user_self_contact_edges (time);
+sqlite>
 ```
 
 ### inverseEdge
@@ -245,8 +278,7 @@ Each created edge is stored in the `assoc_edge_config` table. This is the source
 
 Here's what the table looks like:
 
-- Postgres
-- SQLite
+#### Postgres
 
 ```markdown
 ent-starter=# \d+ assoc_edge_config
@@ -269,4 +301,23 @@ Referenced by:
     TABLE "assoc_edge_config" CONSTRAINT "assoc_edge_config_inverse_edge_type_fkey" FOREIGN KEY (inverse_edge_type) REFERENCES assoc_edge_config(edge_type) ON DELETE RESTRICT
 
 ent-starter=#
+```
+
+#### SQLite
+
+```markdown
+sqlite> .schema assoc_edge_config
+CREATE TABLE assoc_edge_config (
+    edge_type TEXT NOT NULL, 
+    edge_name TEXT NOT NULL, 
+    symmetric_edge BOOLEAN DEFAULT 'false' NOT NULL, 
+    inverse_edge_type TEXT, 
+    edge_table TEXT NOT NULL, 
+    created_at TIMESTAMP NOT NULL, 
+    updated_at TIMESTAMP NOT NULL, 
+    CONSTRAINT assoc_edge_config_edge_type_pkey PRIMARY KEY (edge_type), 
+    CONSTRAINT assoc_edge_config_inverse_edge_type_fkey FOREIGN KEY(inverse_edge_type) REFERENCES assoc_edge_config (edge_type) ON DELETE RESTRICT, 
+    CONSTRAINT assoc_edge_config_unique_edge_name UNIQUE (edge_name)
+);
+sqlite>
 ```

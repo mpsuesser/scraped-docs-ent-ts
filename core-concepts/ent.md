@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/core-concepts/ent
 title: "Ent"
 description: ""
-access_date: 2026-08-03T17:27:01.267Z
-current_date: 2026-08-03T17:27:01.267Z
+access_date: 2026-08-03T18:13:08.120Z
+current_date: 2026-08-03T18:13:08.120Z
 ---
 
 The Ent represents a single node in the graph. Generated from the [schema](../ent-schema/schema.md), it can be configured as needed based on the application.

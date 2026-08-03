@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/custom-graphql/gql-input-object-type
 title: "Gql Input Object Type"
 description: ""
-access_date: 2026-08-03T17:27:01.267Z
-current_date: 2026-08-03T17:27:01.267Z
+access_date: 2026-08-03T18:13:08.120Z
+current_date: 2026-08-03T18:13:08.120Z
 ---
 
 Adds a new input object to the schema. See [example usage](custom-mutations.md#auth-example).

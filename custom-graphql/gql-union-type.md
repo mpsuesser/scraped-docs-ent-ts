@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/custom-graphql/gql-union-type
 title: "Gql Union Type"
 description: ""
-access_date: 2026-08-03T17:27:01.267Z
-current_date: 2026-08-03T17:27:01.267Z
+access_date: 2026-08-03T18:13:08.120Z
+current_date: 2026-08-03T18:13:08.120Z
 ---
 
 Adds a new [GraphQL Union](https://graphql.org/learn/schema/#union-types) to the schema.

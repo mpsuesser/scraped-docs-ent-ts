@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/ent-schema/indices
 title: "Indices"
 description: ""
-access_date: 2026-08-03T17:27:01.267Z
-current_date: 2026-08-03T17:27:01.267Z
+access_date: 2026-08-03T18:13:08.120Z
+current_date: 2026-08-03T18:13:08.120Z
 ---
 
 This allows configuring indices in the database.
@@ -33,8 +33,7 @@ export default ProductItemSchema;
 
 which leads to
 
-- Postgres
-- SQLite
+#### Postgres
 
 ```markdown
 ent-test=# \d+ product_items
@@ -49,6 +48,25 @@ ent-test=# \d+ product_items
 Indexes:
     "product_items_id_pkey" PRIMARY KEY, btree (id)
     "product_items_idx" btree (price, discount_price)
+```
+
+#### SQLite
+
+```markdown
+sqlite> .schema product_items
+CREATE TABLE product_items (
+    id TEXT NOT NULL, 
+    created_at TIMESTAMP NOT NULL, 
+    updated_at TIMESTAMP NOT NULL, 
+    price FLOAT NOT NULL, 
+    discount_price FLOAT NOT NULL, 
+    CONSTRAINT product_items_id_pkey PRIMARY KEY (id), 
+    CONSTRAINT item_positive_discount_price CHECK (discount_price > 0), 
+    CONSTRAINT item_positive_price CHECK (price > 0), 
+    CONSTRAINT item_price_greater_than_discount CHECK (price > discount_price)
+);
+CREATE INDEX product_items_idx ON product_items (price, discount_price);
+sqlite>
 ```
 
 ## Concurrent indexes

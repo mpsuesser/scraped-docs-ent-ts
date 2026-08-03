@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/ent-schema/fields
 title: "Fields"
 description: ""
-access_date: 2026-08-03T17:27:01.267Z
-current_date: 2026-08-03T17:27:01.267Z
+access_date: 2026-08-03T18:13:08.120Z
+current_date: 2026-08-03T18:13:08.120Z
 ---
 
 A field represents each unique item that's part of the object. Each implementation of field configures its representation in the database, TypeScript generated code, and in GraphQL.

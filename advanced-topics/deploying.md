@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/advanced-topics/deploying
 title: "Deploying"
 description: ""
-access_date: 2026-08-03T17:27:01.267Z
-current_date: 2026-08-03T17:27:01.267Z
+access_date: 2026-08-03T18:13:08.120Z
+current_date: 2026-08-03T18:13:08.120Z
 ---
 
 If using the [ent-starter](https://github.com/lolopinto/ent-starter) repository, here are the following things that need to be done to deploy:

@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/actions/input
 title: "Input"
 description: ""
-access_date: 2026-08-03T17:27:01.267Z
-current_date: 2026-08-03T17:27:01.267Z
+access_date: 2026-08-03T18:13:08.120Z
+current_date: 2026-08-03T18:13:08.120Z
 ---
 
 Most Actions have an Input associated with them. This is generated based on how the [action](../ent-schema/actions.md#fields) is [configured](../ent-schema/actions.md#actiononlyfields).

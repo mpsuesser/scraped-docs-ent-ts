@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/actions/permissions
 title: "Permissions"
 description: ""
-access_date: 2026-08-03T17:27:01.267Z
-current_date: 2026-08-03T17:27:01.267Z
+access_date: 2026-08-03T18:13:08.120Z
+current_date: 2026-08-03T18:13:08.120Z
 ---
 
 To control who can perform an action, a [Privacy Policy](../core-concepts/privacy-policy.md) is used.

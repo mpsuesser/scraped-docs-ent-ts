@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/ent-schema/enums
 title: "Enums"
 description: ""
-access_date: 2026-08-03T17:27:01.267Z
-current_date: 2026-08-03T17:27:01.267Z
+access_date: 2026-08-03T18:13:08.120Z
+current_date: 2026-08-03T18:13:08.120Z
 ---
 
 Enums can be configured in three different ways.
@@ -85,8 +85,7 @@ export default RequestStatusSchema;
 
 The schema above generates the following: database table named `request_statuses` with 3 rows: `OPEN`, `PENDING_FULFILLMENT`, `CLOSED`
 
-- Postgres
-- SQLite
+#### Postgres
 
 ```markdown
 ent-test=# \d+ request_statuses;
@@ -106,6 +105,21 @@ ent-test=# select * from request_statuses;
 (3 rows)
 
 ent-test=#
+```
+
+#### SQLite
+
+```markdown
+sqlite> .schema request_statuses
+CREATE TABLE request_statuses (
+    status TEXT NOT NULL, 
+    CONSTRAINT request_statuses_status_pkey PRIMARY KEY (status)
+);
+sqlite> select * from request_statuses;
+OPEN
+PENDING_FULFILLMENT
+CLOSED
+sqlite>
 ```
 
 TypeScript enum `RequestStatus`:

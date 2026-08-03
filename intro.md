@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/intro
 title: "Intro"
 description: ""
-access_date: 2026-08-03T17:27:01.267Z
-current_date: 2026-08-03T17:27:01.267Z
+access_date: 2026-08-03T18:13:08.120Z
+current_date: 2026-08-03T18:13:08.120Z
 ---
 
 The `Ent` framework was created to free up time for engineers and teams to focus on what's different about their app as opposed to spending time rebuilding the same cruft that's common across different projects.
@@ -152,8 +152,7 @@ we have a **live** GraphQL server.
 
 Note that the database was also updated by the command run above.
 
-- Postgres
-- SQLite
+#### Postgres
 
 ```markdown
 psql ent-starter
@@ -175,6 +174,27 @@ Indexes:
     "users_unique_email_address" UNIQUE CONSTRAINT, btree (email_address)
 
 ent-starter=#
+```
+
+#### SQLite
+
+```markdown
+sqlite3 ent-starter.db
+
+# and then 
+sqlite> .schema users
+CREATE TABLE users (
+    id TEXT NOT NULL, 
+    created_at TIMESTAMP NOT NULL, 
+    updated_at TIMESTAMP NOT NULL, 
+    first_name TEXT NOT NULL, 
+    last_name TEXT NOT NULL, 
+    email_address TEXT NOT NULL, 
+    password TEXT NOT NULL, 
+    CONSTRAINT users_id_pkey PRIMARY KEY (id), 
+    CONSTRAINT users_unique_email_address UNIQUE (email_address)
+);
+sqlite>
 ```
 
 ## Adding writes
@@ -481,8 +501,7 @@ What changed above:
 
 Run the following commands:
 
-- Postgres
-- SQLite
+#### Postgres
 
 ```markdown
 psql ent-starter
@@ -510,6 +529,23 @@ email_address | sansa@stark.com
 password      | $2a$10$q1cwrLhDIiXOXQAjz7zN5u2KC2.QJ.WADfA2ozNuOTvjxrntJGNEC
 
 ent-starter=#
+```
+
+#### SQLite
+
+```markdown
+sqlite3 ent-starter.db
+# and then the following commands
+SQLite version 3.32.3 2020-06-18 14:16:19
+Enter ".help" for usage hints.
+sqlite> .headers on
+sqlite> .mode column
+sqlite> .separator ROW "\n"
+sqlite> select * from users;
+id                                    created_at                updated_at                first_name  last_name   email_address  password                                                    
+------------------------------------  ------------------------  ------------------------  ----------  ----------  -------------  ------------------------------------------------------------
+2b00ec39-12cc-4941-8343-6bb58d958a35  2021-07-06T19:24:55.268Z  2021-07-06T19:24:55.269Z  John        Snow        test@foo.com   $2a$10$s8OvbQbzGqXN6AZ9XujTLOg58u5bmS7sFi8VGbgz0gk/S3lBDki.m
+c425044c-55d0-4e0e-a7f9-79e36744df68  2021-07-06T19:27:23.623Z  2021-07-06T19:27:23.637Z  Sansa       Stark       sansa@stark.c  $2a$10$tOr3jfrR/idizjrcgrrR1euibQqNJ3y.O2ntODMthUs94DnxHcQCm
 ```
 
 ## Unique Constraint

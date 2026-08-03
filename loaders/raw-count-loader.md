@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/loaders/raw-count-loader
 title: "Raw Count Loader"
 description: ""
-access_date: 2026-08-03T17:27:01.267Z
-current_date: 2026-08-03T17:27:01.267Z
+access_date: 2026-08-03T18:13:08.120Z
+current_date: 2026-08-03T18:13:08.120Z
 ---
 
 RawCountLoader is a [`Loader`](loader.md) which is used to generate the rawCount for the number of rows in the database.

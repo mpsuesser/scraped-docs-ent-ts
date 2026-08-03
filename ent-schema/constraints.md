@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/ent-schema/constraints
 title: "Constraints"
 description: ""
-access_date: 2026-08-03T17:27:01.267Z
-current_date: 2026-08-03T17:27:01.267Z
+access_date: 2026-08-03T18:13:08.120Z
+current_date: 2026-08-03T18:13:08.120Z
 ---
 
 This allows configuring constraints in the database.
@@ -36,8 +36,7 @@ export default GuestSchema;
 
 leads to database change
 
-- Postgres
-- SQLite
+#### Postgres
 
 ```markdown
 ent-rsvp=# \d+ guests
@@ -56,6 +55,24 @@ Indexes:
 Foreign-key constraints:
     "guests_event_id_fkey" FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
 ent-rsvp=#
+```
+
+#### SQLite
+
+```markdown
+sqlite> .schema guests
+CREATE TABLE guests (
+    id TEXT NOT NULL, 
+    created_at TIMESTAMP NOT NULL, 
+    updated_at TIMESTAMP NOT NULL, 
+    event_id TEXT NOT NULL, 
+    email_address TEXT, 
+    CONSTRAINT guests_id_pkey PRIMARY KEY (id), 
+    CONSTRAINT guests_event_id_fkey FOREIGN KEY(event_id) REFERENCES events (id) ON DELETE CASCADE, 
+    CONSTRAINT "uniqueEmail" UNIQUE (event_id, email_address)
+);
+CREATE INDEX guests_event_id_idx ON guests (event_id);
+sqlite>
 ```
 
 ## primary key constraint
@@ -86,8 +103,7 @@ export default UserPhotoSchema;
 
 leads to database change:
 
-- Postgres
-- SQLite
+#### Postgres
 
 ```markdown
 ent-test=# \d+ user_photos
@@ -98,6 +114,18 @@ ent-test=# \d+ user_photos
  photo_id | uuid |           | not null |         | plain   |              | 
 Indexes:
     "user_photos_pkey" PRIMARY KEY, btree (user_id, photo_id)
+```
+
+#### SQLite
+
+```markdown
+sqlite> .schema user_photos
+CREATE TABLE user_photos (
+    user_id TEXT NOT NULL, 
+    photo_id TEXT NOT NULL, 
+    CONSTRAINT user_photos_pkey PRIMARY KEY (user_id, photo_id)
+);
+sqlite>
 ```
 
 TODO: Currently, there's an issue here that needs to be fixed: [https://github.com/lolopinto/ent/issues/328](https://github.com/lolopinto/ent/issues/328)
@@ -160,8 +188,7 @@ export default ContactSchema;
 
 leads to
 
-- Postgres
-- SQLite
+#### Postgres
 
 ```markdown
 ent-test=# \d+ users
@@ -196,6 +223,34 @@ Foreign-key constraints:
     "contacts_user_fkey" FOREIGN KEY (user_id, email_address) REFERENCES users(id, email_address) ON DELETE CASCADE
 ```
 
+#### SQLite
+
+```markdown
+sqlite> .schema users
+CREATE TABLE users (
+    id TEXT NOT NULL, 
+    created_at TIMESTAMP NOT NULL, 
+    updated_at TIMESTAMP NOT NULL, 
+    first_name TEXT NOT NULL, 
+    last_name TEXT NOT NULL, 
+    email_address TEXT NOT NULL, 
+    password TEXT NOT NULL, 
+    CONSTRAINT users_id_pkey PRIMARY KEY (id), 
+    CONSTRAINT users_unique_email_address UNIQUE (email_address)
+);
+sqlite> .schema contacts
+CREATE TABLE contacts (
+    id TEXT NOT NULL, 
+    created_at TIMESTAMP NOT NULL, 
+    updated_at TIMESTAMP NOT NULL, 
+    email_address TEXT NOT NULL, 
+    user_id TEXT NOT NULL, 
+    CONSTRAINT contacts_id_pkey PRIMARY KEY (id), 
+    CONSTRAINT contacts_user_fkey FOREIGN KEY(user_id, email_address) REFERENCES users (id, email_address) ON DELETE CASCADE
+);
+sqlite>
+```
+
 ## check constraint
 
 adds a [check constraint](https://www.postgresql.org/docs/current/ddl-constraints.html#DDL-CONSTRAINTS-CHECK-CONSTRAINTS) to the schema.
@@ -224,8 +279,7 @@ export default ItemSchema;
 
 leads to
 
-- Postgres
-- SQLite
+#### Postgres
 
 ```markdown
 ent-test=# \d+ items
@@ -242,6 +296,21 @@ Check constraints:
     "item_positive_price" CHECK (price > 0::double precision)
 
 ent-test=#
+```
+
+#### SQLite
+
+```markdown
+sqlite> .schema items
+CREATE TABLE items (
+    id TEXT NOT NULL, 
+    created_at TIMESTAMP NOT NULL, 
+    updated_at TIMESTAMP NOT NULL, 
+    price FLOAT NOT NULL, 
+    CONSTRAINT items_id_pkey PRIMARY KEY (id), 
+    CONSTRAINT item_positive_price CHECK (price > 0)
+);
+sqlite>
 ```
 
 or for something more complicated
@@ -281,8 +350,7 @@ export default ProductItemSchema;
 
 leads to
 
-- Postgres
-- SQLite
+#### Postgres
 
 ```markdown
 ent-test=# \d+ product_items
@@ -300,6 +368,24 @@ Check constraints:
     "item_positive_discount_price" CHECK (discount_price > 0::double precision)
     "item_positive_price" CHECK (price > 0::double precision)
     "item_price_greater_than_discount" CHECK (price > discount_price)
+```
+
+#### SQLite
+
+```markdown
+sqlite> .schema product_items
+CREATE TABLE product_items (
+    id TEXT NOT NULL, 
+    created_at TIMESTAMP NOT NULL, 
+    updated_at TIMESTAMP NOT NULL, 
+    price FLOAT NOT NULL, 
+    discount_price FLOAT NOT NULL, 
+    CONSTRAINT product_items_id_pkey PRIMARY KEY (id), 
+    CONSTRAINT item_positive_discount_price CHECK (discount_price > 0), 
+    CONSTRAINT item_positive_price CHECK (price > 0), 
+    CONSTRAINT item_price_greater_than_discount CHECK (price > discount_price)
+);
+sqlite>
 ```
 
 ## options

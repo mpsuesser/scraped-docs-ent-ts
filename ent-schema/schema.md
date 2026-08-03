@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/ent-schema/schema
 title: "Schema"
 description: ""
-access_date: 2026-08-03T17:27:01.267Z
-current_date: 2026-08-03T17:27:01.267Z
+access_date: 2026-08-03T18:13:08.120Z
+current_date: 2026-08-03T18:13:08.120Z
 ---
 
 The `Schema` is the core building block that's used to configure each node in the product.

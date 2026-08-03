@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/advanced-topics/index-patterns
 title: "Index Patterns"
 description: ""
-access_date: 2026-08-03T19:39:33.704Z
-current_date: 2026-08-03T19:39:33.704Z
+access_date: 2026-08-03T19:45:08.019Z
+current_date: 2026-08-03T19:45:08.019Z
 ---
 
 This doc summarizes index patterns that match the query shapes built in `ts/src/core/ent.ts` and `ts/src/core/loaders/*` (notably `buildGroupQuery`, `QueryLoader`, `AssocEdgeLoader`, and `RawCountLoader`).

@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/custom-graphql/gql-field
 title: "Gql Field"
 description: ""
-access_date: 2026-08-03T19:39:33.704Z
-current_date: 2026-08-03T19:39:33.704Z
+access_date: 2026-08-03T19:45:08.019Z
+current_date: 2026-08-03T19:45:08.019Z
 ---
 
 `gqlField` annotates a property or method to indicate that it should be exposed as a GraphQL Field on the source object.

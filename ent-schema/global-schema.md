@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/ent-schema/global-schema
 title: "Global Schema"
 description: ""
-access_date: 2026-08-03T19:39:33.704Z
-current_date: 2026-08-03T19:39:33.704Z
+access_date: 2026-08-03T19:45:08.019Z
+current_date: 2026-08-03T19:45:08.019Z
 ---
 
 `global_schema` lets you describe reusable fields, structs, enums, and even edge behavior once and then opt into them from any schema. Use it when multiple Ents share the exact same JSON payload, enum values, or edge lifecycle rules so you only need to maintain a single definition.

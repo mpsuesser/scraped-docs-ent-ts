@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/loaders/loader
 title: "Loader"
 description: ""
-access_date: 2026-08-03T19:39:33.704Z
-current_date: 2026-08-03T19:39:33.704Z
+access_date: 2026-08-03T19:45:08.019Z
+current_date: 2026-08-03T19:45:08.019Z
 ---
 
 Loader is the core primitive of data fetching used by the framework. It's used by the generated code to fetch data and retrieve from the [context cache](../core-concepts/context-caching.md) as needed.

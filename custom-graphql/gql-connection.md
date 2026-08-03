@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/custom-graphql/gql-connection
 title: "Gql Connection"
 description: ""
-access_date: 2026-08-03T19:39:33.704Z
-current_date: 2026-08-03T19:39:33.704Z
+access_date: 2026-08-03T19:45:08.019Z
+current_date: 2026-08-03T19:45:08.019Z
 ---
 
 `gqlConnection` is the [type](gql-field.md#type) of a [`gqlField`](gql-field.md) to indicate that it should be exposed as a [GraphQL Connection](https://graphql.org/learn/pagination/#complete-connection-model) on the source object that follows the [Relay Spec](https://relay.dev/graphql/connections.htm).

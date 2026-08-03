@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/advanced-topics/configuration
 title: "Configuration"
 description: ""
-access_date: 2026-08-03T19:39:33.704Z
-current_date: 2026-08-03T19:39:33.704Z
+access_date: 2026-08-03T19:45:08.019Z
+current_date: 2026-08-03T19:45:08.019Z
 ---
 
 There's both codegen and runtime configuration of the ent framework.

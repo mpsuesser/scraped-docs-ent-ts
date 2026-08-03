@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/actions/add-edge-action
 title: "Add Edge Action"
 description: ""
-access_date: 2026-08-03T18:13:08.120Z
-current_date: 2026-08-03T18:13:08.120Z
+access_date: 2026-08-03T18:23:20.955Z
+current_date: 2026-08-03T18:23:20.955Z
 ---
 
 This is done via the `ActionOperation.AddEdge` [operation](../ent-schema/actions.md#operation).

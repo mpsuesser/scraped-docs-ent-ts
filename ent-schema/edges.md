@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/ent-schema/edges
 title: "Edges"
 description: ""
-access_date: 2026-08-03T18:13:08.120Z
-current_date: 2026-08-03T18:13:08.120Z
+access_date: 2026-08-03T18:23:20.955Z
+current_date: 2026-08-03T18:23:20.955Z
 ---
 
 Edges provide the ability to express connections between nodes in the graph. They allow a standardized way to indicate a relationship.

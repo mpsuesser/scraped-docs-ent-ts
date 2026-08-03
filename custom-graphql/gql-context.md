@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/custom-graphql/gql-context
 title: "Gql Context"
 description: ""
-access_date: 2026-08-03T18:13:08.120Z
-current_date: 2026-08-03T18:13:08.120Z
+access_date: 2026-08-03T18:23:20.955Z
+current_date: 2026-08-03T18:23:20.955Z
 ---
 
 `gqlContextType` annotates a method to indicate that it needs the [RequestContext](../core-concepts/context.md#requestcontext) and the generated GraphQL code should pass it down to the method.

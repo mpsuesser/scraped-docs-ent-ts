@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/advanced-topics/running-locally
 title: "Running Locally"
 description: ""
-access_date: 2026-08-03T18:13:08.120Z
-current_date: 2026-08-03T18:13:08.120Z
+access_date: 2026-08-03T18:23:20.955Z
+current_date: 2026-08-03T18:23:20.955Z
 ---
 
 - TypeScript: all the production code is in TypeScript

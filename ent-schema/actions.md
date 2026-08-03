@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/ent-schema/actions
 title: "Actions"
 description: ""
-access_date: 2026-08-03T18:13:08.120Z
-current_date: 2026-08-03T18:13:08.120Z
+access_date: 2026-08-03T18:23:20.955Z
+current_date: 2026-08-03T18:23:20.955Z
 ---
 
 Actions are the way to configure writes in the system. Instead of just a blanket create, edit and delete option, we believe it makes more sense to have more nuanced options when it makes sense.

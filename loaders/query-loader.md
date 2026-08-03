@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/loaders/query-loader
 title: "Query Loader"
 description: ""
-access_date: 2026-08-03T18:13:08.120Z
-current_date: 2026-08-03T18:13:08.120Z
+access_date: 2026-08-03T18:23:20.955Z
+current_date: 2026-08-03T18:23:20.955Z
 ---
 
 QueryLoader is a [`Loader`](loader.md) which is used to fetch multiple rows in the database.

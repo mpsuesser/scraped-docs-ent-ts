@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/custom-graphql/gql-object-type
 title: "Gql Object Type"
 description: ""
-access_date: 2026-08-03T18:13:08.120Z
-current_date: 2026-08-03T18:13:08.120Z
+access_date: 2026-08-03T18:23:20.955Z
+current_date: 2026-08-03T18:23:20.955Z
 ---
 
 Adds a new object to the schema. See example [usage](custom-queries.md#viewer).

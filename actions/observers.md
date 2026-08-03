@@ -2,8 +2,8 @@
 url: https://ent.dev/docs/actions/observers
 title: "Observers"
 description: ""
-access_date: 2026-08-03T18:13:08.120Z
-current_date: 2026-08-03T18:13:08.120Z
+access_date: 2026-08-03T18:23:20.955Z
+current_date: 2026-08-03T18:23:20.955Z
 ---
 
 Observers allow for coordinating changes that shouldn't be made within the same transaction as the write.
